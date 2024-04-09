@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'sorbet-runtime', '~> 0.5'
 
   spec.add_development_dependency 'bundler-audit', '~> 0.9'
+  spec.add_development_dependency 'dvla-lint', '~> 1.7'
   spec.add_development_dependency 'rspec', '~> 3.8'
   spec.add_development_dependency 'sorbet', '~> 0.5'
   spec.add_development_dependency 'tapioca', '~> 0.10'
