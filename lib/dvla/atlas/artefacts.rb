@@ -7,7 +7,7 @@ module DVLA
     class Artefacts
       extend T::Sig
 
-      sig { params(vargs: String, kwargs: T.untyped).void }
+      sig { params(vargs: T.any(String, Symbol), kwargs: T.untyped).void }
       def define_fields(*vargs, **kwargs)
         vargs.each do |attr|
           initialise_fields(attr)
@@ -25,17 +25,17 @@ module DVLA
       def initialise_fields(name)
         # Create the history of the newly defined field. This will start out empty. There is no public way to set this so
         # no need to expose it by defining a method.
-        instance_variable_set("@#{name}_history", [])
+        instance_variable_set(:"@#{name}_history", [])
 
         # Create the getter for the new field, and ensure that it is run upon call if it is a proc.
         define_singleton_method :"#{name}" do
-          value = instance_variable_get("@#{name}")
+          value = instance_variable_get(:"@#{name}")
           value.respond_to?(:call) ? value.call : value
         end
 
         # Define a getter for the history of the new field
         define_singleton_method :"#{name}_history" do
-          instance_variable_get("@#{name}_history")
+          instance_variable_get(:"@#{name}_history")
         end
 
         # Define the setter for the new field. This also pushes the current value of the field into the history unless
@@ -44,7 +44,7 @@ module DVLA
         define_singleton_method :"#{name}=" do |arg|
           current_value = send(:"#{name}")
           send(:"#{name}_history").push(current_value) unless send(:"#{name}_history").empty? && current_value.nil?
-          instance_variable_set("@#{name}", arg)
+          instance_variable_set(:"@#{name}", arg)
         end
       end
     end
