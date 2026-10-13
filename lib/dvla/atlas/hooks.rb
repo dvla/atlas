@@ -1,9 +1,9 @@
 require 'dvla/atlas'
 
 BeforeAll do
-  DVLA::Atlas.setup_output_directory
+  DVLA::Atlas::OutputDirectory.setup
 end
 
 Before do |scenario|
-  DVLA::Atlas.scenario_log_directory(scenario)
+  DVLA::Atlas::OutputDirectory.scenario_directory(scenario)
 end

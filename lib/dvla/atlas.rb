@@ -21,19 +21,14 @@ module DVLA
       Object.send(:define_method, :artefacts) { DVLA::Atlas::Holder.instance.artefacts }
     end
 
-    sig { returns(String) }
-    def self.setup_output_directory
-      DVLA::Atlas::OutputDirectory.setup
-    end
-
-    sig { params(scenario: T.untyped).returns(String) }
-    def self.scenario_log_directory(scenario)
-      DVLA::Atlas::OutputDirectory.scenario_directory(scenario)
+    sig { returns(T.nilable(String)) }
+    def self.scenario_directory
+      DVLA::Atlas::OutputDirectory.current_scenario
     end
 
     sig { returns(T.nilable(String)) }
-    def self.output_dir
-      DVLA::Atlas::OutputDirectory.current_scenario || DVLA::Atlas::OutputDirectory.current
+    def self.parent_directory
+      DVLA::Atlas::OutputDirectory.current
     end
   end
 end
