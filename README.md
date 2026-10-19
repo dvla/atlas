@@ -148,6 +148,37 @@ World do
 end
 ```
 
+### Managing test output directories
+
+Atlas can manage the creation of log directories for your test run. It creates a single timestamped top-level directory once for the whole run, then a per-scenario subdirectory at the start of each scenario. This works for both single and parallel test runs.
+
+The easiest way to set this up is to add one line to your `support/env.rb`:
+
+```ruby
+require 'dvla/atlas/hooks'
+```
+
+This registers a `BeforeAll` hook that creates `./test-logs/<timestamp>` and a `Before` hook that creates `./test-logs/<timestamp>/<feature_file>/<scenario_name>` at the start of each scenario.
+
+The current directories are then accessible anywhere in your test pack via:
+
+```ruby
+DVLA::Atlas.scenario_directory  # current scenario-level directory
+DVLA::Atlas.parent_directory    # top-level run directory
+```
+
+If you need more control you can forgo the hooks and call the methods directly instead in `support/hooks.rb`:
+
+```ruby
+BeforeAll do
+  DVLA::Atlas::OutputDirectory.setup
+end
+
+Before do |scenario|
+  DVLA::Atlas::OutputDirectory.scenario_directory(scenario)
+end
+```
+
 ## Development
 
 Atlas is quite lightweight. The functionality that deals with the creation of properties in with the test artefact is located within `artefacts.rb`. This project uses [Sorbet](https://sorbet.org/) for type checking. When making changes, don't forget to add tests.

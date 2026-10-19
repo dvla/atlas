@@ -1,4 +1,4 @@
-require 'dvla/atlas/artefacts'
+require 'spec_helper'
 
 RSpec.describe DVLA::Atlas::Artefacts do
   let(:artefacts) { DVLA::Atlas::Artefacts.new }

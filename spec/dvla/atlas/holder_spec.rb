@@ -1,4 +1,4 @@
-require 'dvla/atlas/holder'
+require 'spec_helper'
 
 describe DVLA::Atlas::Holder do
   let(:holder) { DVLA::Atlas::Holder.instance }

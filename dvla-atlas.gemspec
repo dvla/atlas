@@ -29,7 +29,11 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'bundler-audit', '~> 0.9'
   spec.add_development_dependency 'dvla-lint', '~> 1.7'
+  spec.add_development_dependency 'parallel', '~> 1.0'
   spec.add_development_dependency 'rspec', '~> 3.8'
+  spec.add_development_dependency 'simplecov', '~> 0.22.0'
+  spec.add_development_dependency 'simplecov-console', '~> 0.9.3'
+  spec.add_development_dependency 'simplecov_json_formatter', '~> 0.1'
   spec.add_development_dependency 'sorbet', '~> 0.5'
   spec.add_development_dependency 'tapioca', '~> 0.10'
 end
