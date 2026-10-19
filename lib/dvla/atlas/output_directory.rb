@@ -23,29 +23,20 @@ module DVLA
         @output_directory = T.let(parallel_safe_setup, T.nilable(String))
       end
 
-      private
 
       sig { returns(String) }
       def self.parallel_safe_setup
         sync_file = "/tmp/atlas-output-dir-#{Process.ppid}"
 
-        if first_process?
+        File.open("#{sync_file}.lock", File::RDWR | File::CREAT, 0o644) do |lock|
+          lock.flock(File::LOCK_EX)
+          return File.read(sync_file) if File.exist?(sync_file)
+
           directory = "./test-logs/#{Time.now.strftime('%Y-%m-%d_%H-%M-%S')}"
           FileUtils.mkdir_p(directory)
           File.write(sync_file, directory)
           directory
-        else
-          sleep 0.1 until File.exist?(sync_file)
-          File.read(sync_file)
         end
-      end
-
-      sig { returns(T::Boolean) }
-      def self.first_process?
-        return true unless ENV['TEST_ENV_NUMBER']
-
-        require 'parallel_tests'
-        ParallelTests.first_process?
       end
 
       sig { params(scenario: T.untyped).returns(String) }

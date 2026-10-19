@@ -1,5 +1,4 @@
-require 'dvla/atlas/test_artefactory'
-require 'dvla/atlas/artefacts'
+require 'spec_helper'
 
 RSpec.describe DVLA::Atlas::TestArtefactory do
   let(:base_world) { DVLA::Atlas::TestArtefactory.new }

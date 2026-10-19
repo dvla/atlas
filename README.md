@@ -150,9 +150,9 @@ end
 
 ### Managing test output directories
 
-Atlas can manage the creation of log directories for your test run. It creates a single timestamped top-level directory once for the whole run, then a per-scenario subdirectory at the start of each scenario.
+Atlas can manage the creation of log directories for your test run. It creates a single timestamped top-level directory once for the whole run, then a per-scenario subdirectory at the start of each scenario. This works for both single and parallel test runs.
 
-The easiest way to set this up is to add one line to your `env.rb`:
+The easiest way to set this up is to add one line to your `support/env.rb`:
 
 ```ruby
 require 'dvla/atlas/hooks'
@@ -160,23 +160,22 @@ require 'dvla/atlas/hooks'
 
 This registers a `BeforeAll` hook that creates `./test-logs/<timestamp>` and a `Before` hook that creates `./test-logs/<timestamp>/<feature_file>/<scenario_name>` at the start of each scenario.
 
-The current output directory is then accessible anywhere in your test pack via:
+The current directories are then accessible anywhere in your test pack via:
 
 ```ruby
-DVLA::Atlas.output_dir
+DVLA::Atlas.scenario_directory  # current scenario-level directory
+DVLA::Atlas.parent_directory    # top-level run directory
 ```
 
-This returns the scenario-level directory during a scenario, or the run-level directory outside of one.
-
-If you need more control you can call the methods directly instead of using the hooks file:
+If you need more control you can forgo the hooks and call the methods directly instead in `support/hooks.rb`:
 
 ```ruby
 BeforeAll do
-  DVLA::Atlas.setup_output_directory
+  DVLA::Atlas::OutputDirectory.setup
 end
 
 Before do |scenario|
-  DVLA::Atlas.scenario_log_directory(scenario)
+  DVLA::Atlas::OutputDirectory.scenario_directory(scenario)
 end
 ```
 
